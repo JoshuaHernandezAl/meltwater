@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Logger, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CensorDocumentDTO, CensorResponse } from './dtos/CensorDocument';
 import { UncensorDocumentDTO, UncensorResponse } from './dtos/UncensorDocuments';
@@ -12,8 +12,11 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getDocumentsByKeywords(): string {
-    return "Hello World";
+  getDocumentsByKeywords(@Query('keyword') keyword: string): Promise<string[]> {
+    if (!keyword || keyword.trim().length === 0) {
+      throw new BadRequestException('Keyword is required');
+    }
+    return this.appService.getDocumentsByKeywords(keyword);
   }
   @Post('encrypt')
   async encryptDocument(@Body() data: CensorDocumentDTO):Promise<CensorResponse>{

@@ -1,0 +1,29 @@
+services:
+  mongodb:
+    image: mongo:8.2.3
+    container_name: meltwater_mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: meltwater
+      MONGO_INITDB_ROOT_PASSWORD: meltwater
+      MONGO_INITDB_DATABASE: meltwater_db
+    volumes:
+      - mongo_data:/data/db
+  elasticsearch:
+    image: elasticsearch:8.11.3
+    container_name: cia_elasticsearch
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+
+volumes:
+  mongo_data:
+    driver: local
+  es_data:
+    driver: local
