@@ -28,7 +28,7 @@ pnpm start #run the demo
 
 Once you have the demo running, you can access request the API via the following endpoints:
 
-```bash 
+```bash
 # To redact a document
 curl --location 'http://localhost:3000/v1/meltwater/encrypt' \
 --header 'Content-Type: application/json' \
